@@ -1,126 +1,102 @@
 const mush= document.querySelector('.mushroom');
+const hp= document.querySelector('.healthBar');
 const dis= document.querySelector('.display');
 const it= document.querySelector('.item');
 const it2= document.querySelector('.item2');
 const it3= document.querySelector('.item3');
-let current= 0;
-let counter= 0;
+const imgO= [
+    'Images/0.png',
+    'Images/1.png',
+    'Images/2.png',
+    'Images/1.png',
+    'Images/0.png'
+];
+const imgB= [
+    'Images/3.png',
+    'Images/4.png',
+    'Images/5.png',
+    'Images/4.png',
+    'Images/3.png'
+];
+let position= 0;
+let maxhealth= 50;
+let curhealth= 50;
+let colour= 0;
+let dmg= 1;
 let ith= 0;
 let ith2= 0;
 let ith3= 0;
-let have= 0;
-
-mush.addEventListener('click', inc);
 
 window.onload= display();
 
+setInterval(move, 300);
+
+function move(){
+    if(colour== 0){
+        if (position <= 4){
+            mush.src= imgO[position];
+            position++;
+        }else{
+            position= 0;
+        };
+    };
+    
+    if(colour== 1){
+        if (position <= 4){
+            mush.src= imgB[position];
+            position++;
+        }else{
+            position= 0;
+        };
+    };
+};
+
 function display(){
-    dis.innerHTML= 'Score: ' + counter;
+    hp.innerHTML= 'HP: ' + curhealth + ' / ' + maxhealth;
+};
+
+mush.addEventListener('click', hit);
+
+function hit(){
+    curhealth= curhealth - dmg;
+    display();
+    if(curhealth <= 0){
+        spawn();
+        drop();
+    };
 };
 
 function spawn(){
     rando= Math.floor(Math.random() * 100);
     if(rando < 80){
-        current= 0;
-        inc();
+        colour= 0;
+        maxhealth= 50;
+        curhealth= 50;
+        display();
     }else{
-        current= 5;
-        inc();
-    };
-};
-
-function inc(){
-    switch(current){
-        //orange
-        case 0:
-            mush.src= 'Images/0.png';
-            current= 1;
-            break;
-        case 1:
-            mush.src= 'Images/1.png';
-            current= 2;
-            break;
-        case 2:
-            mush.src= 'Images/2.png';
-            current= 3;
-            break;
-        case 3:
-            mush.src= 'Images/1.png';
-            current= 4;
-            break;
-        case 4:
-            mush.src= 'Images/0.png';
-            counter++;
-            display();
-            drop();
-            spawn();
-            break;
-        //blue
-        case 5:
-            mush.src= 'Images/3.png';
-            current= 6;
-            break;
-        case 6:
-            mush.src= 'Images/4.png';
-            current= 7;
-            break;
-        case 7:
-            mush.src= 'Images/5.png';
-            current= 8;
-            break;
-        case 8:
-            mush.src= 'Images/4.png';
-            current= 9;
-            break;
-        case 9:
-            mush.src= 'Images/3.png';
-            counter+= 2;
-            display();
-            drop();
-            spawn();
-            break;
+        colour= 1;
+        maxhealth= 100;
+        curhealth= 100;
+        display();
     };
 };
 
 function drop(){
-    rdrop= Math.floor(Math.random() * 100);
-    if(rdrop < 50 && ith== 0){
-        it.src= 'Images/blank.jpg';
-        have++;
-        ith= 1;
-        aut();
+    dropchance= Math.floor(Math.random() * 100);
+    if(dropchance < 80 && ith== 0){
+        it.src= 'Images/iron.png';
+        dmg+= 1;
     };
-    if(rdrop < 25 && ith2== 0){
-        it2.src= 'Images/blue.jpg';
-        have+= 2;
-        ith2= 1;
-        aut2();
+    
+    dropchance2= Math.floor(Math.random() * 100);
+    if(dropchance2 < 50 && ith2== 0){
+        it2.src= 'Images/black.png';
+        dmg+= 3;
     };
-    if(rdrop < 5 && ith3== 0){
-        it3.src= 'Images/red.jpg';
-        have+= 3;
-        ith3= 1;
-        aut3();
+    
+    dropchance3= Math.floor(Math.random() * 100);
+    if(dropchance3 < 30 && ith3== 0){
+        it3.src= 'Images/mithril.png';
+        dmg+= 5;
     };
-};
-
-function aut(){
-    setInterval(function(){
-        counter++;
-        display();
-    }, 1000);
-};
-
-function aut2(){
-    setInterval(function(){
-        counter+= 5;
-        display();
-    }, 1000);
-};
-
-function aut3(){
-    setInterval(function(){
-        counter+= 10;
-        display();
-    }, 1000);
 };
