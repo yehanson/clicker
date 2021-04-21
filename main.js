@@ -1,5 +1,6 @@
 const mush= document.querySelector('.mushroom');
 const hp= document.querySelector('.healthBar');
+const d= document.querySelector('.dmgBar');
 const dis= document.querySelector('.display');
 const it= document.querySelector('.item');
 const it2= document.querySelector('.item2');
@@ -53,6 +54,7 @@ function move(){
 
 function display(){
     hp.innerHTML= 'HP: ' + curhealth + ' / ' + maxhealth;
+    d.innerHTML= 'Damage: ' + dmg;
 };
 
 mush.addEventListener('click', hit);
@@ -86,17 +88,23 @@ function drop(){
     if(dropchance < 80 && ith== 0){
         it.src= 'Images/iron.png';
         dmg+= 1;
+        ith= 1;
+        display();
     };
     
     dropchance2= Math.floor(Math.random() * 100);
     if(dropchance2 < 50 && ith2== 0){
         it2.src= 'Images/black.png';
         dmg+= 3;
+        ith2= 1;
+        display();
     };
     
     dropchance3= Math.floor(Math.random() * 100);
     if(dropchance3 < 30 && ith3== 0){
         it3.src= 'Images/mithril.png';
         dmg+= 5;
+        ith3= 1;
+        display();
     };
 };
